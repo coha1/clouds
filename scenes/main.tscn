@@ -1,0 +1,224 @@
+[gd_scene load_steps=28 format=3 uid="uid://clouds_main"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/delivery_manager.gd" id="2_dm"]
+[ext_resource type="Script" path="res://scripts/camera_rig.gd" id="3_cam"]
+[ext_resource type="PackedScene" path="res://scenes/plane/plane.tscn" id="4_plane"]
+[ext_resource type="PackedScene" path="res://scenes/characters/character.tscn" id="5_char"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/delivery_ui.tscn" id="7_dui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/completion_ui.tscn" id="8_cui"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_ocean"]
+albedo_color = Color(0.12, 0.38, 0.62, 1)
+roughness = 0.08
+
+[sub_resource type="StandardMaterial3D" id="Mat_aerie"]
+albedo_color = Color(0.55, 0.52, 0.48, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_snow"]
+albedo_color = Color(0.92, 0.94, 0.96, 1)
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="Mat_cove"]
+albedo_color = Color(0.38, 0.58, 0.32, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_mesa"]
+albedo_color = Color(0.72, 0.58, 0.38, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_grove"]
+albedo_color = Color(0.28, 0.52, 0.25, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_grove_trees"]
+albedo_color = Color(0.18, 0.42, 0.16, 1)
+roughness = 0.95
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.18, 0.46, 0.82, 1)
+sky_horizon_color = Color(0.72, 0.86, 0.98, 1)
+sky_curve = 0.08
+ground_bottom_color = Color(0.06, 0.06, 0.06, 1)
+ground_horizon_color = Color(0.62, 0.76, 0.88, 1)
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("SkyMat")
+
+[sub_resource type="Environment" id="Env_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 3
+ambient_light_energy = 0.55
+fog_enabled = true
+fog_light_color = Color(0.72, 0.84, 0.96, 1)
+fog_density = 0.0004
+
+; ─────────────────────────────────────────────────────────────────────────────
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_main")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0.0, 0.707, 0.707, -0.5, -0.612, 0.612, 0.0, 800.0, 0.0)
+light_energy = 1.2
+shadow_enabled = true
+
+; ── World ─────────────────────────────────────────────────────────────────────
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Ocean" type="CSGBox3D" parent="World"]
+position = Vector3(0.0, -18.0, 0.0)
+size = Vector3(4000.0, 12.0, 4000.0)
+material_override = SubResource("Mat_ocean")
+
+; Island Aerie — high rocky peak, player spawn
+
+[node name="IslandAerie" type="Node3D" parent="World"]
+
+[node name="AerieBase" type="CSGBox3D" parent="World/IslandAerie"]
+position = Vector3(0.0, 42.0, 0.0)
+size = Vector3(180.0, 90.0, 180.0)
+material_override = SubResource("Mat_aerie")
+
+[node name="AeriePeak" type="CSGCylinder3D" parent="World/IslandAerie"]
+position = Vector3(0.0, 108.0, 0.0)
+radius = 48.0
+height = 60.0
+material_override = SubResource("Mat_aerie")
+
+[node name="AerieSnowcap" type="CSGCylinder3D" parent="World/IslandAerie"]
+position = Vector3(0.0, 140.0, 0.0)
+radius = 22.0
+height = 20.0
+material_override = SubResource("Mat_snow")
+
+; Island Cove — low green island
+
+[node name="IslandCove" type="Node3D" parent="World"]
+position = Vector3(380.0, 0.0, 220.0)
+
+[node name="CoveBase" type="CSGBox3D" parent="World/IslandCove"]
+position = Vector3(0.0, 22.0, 0.0)
+size = Vector3(200.0, 48.0, 160.0)
+material_override = SubResource("Mat_cove")
+
+[node name="CoveHill" type="CSGCylinder3D" parent="World/IslandCove"]
+position = Vector3(-28.0, 58.0, 18.0)
+radius = 58.0
+height = 36.0
+material_override = SubResource("Mat_cove")
+
+; Island Mesa — flat-topped sandy mesa
+
+[node name="IslandMesa" type="Node3D" parent="World"]
+position = Vector3(-280.0, 0.0, 380.0)
+
+[node name="MesaBase" type="CSGBox3D" parent="World/IslandMesa"]
+position = Vector3(0.0, 35.0, 0.0)
+size = Vector3(160.0, 75.0, 160.0)
+material_override = SubResource("Mat_mesa")
+
+[node name="MesaTop" type="CSGBox3D" parent="World/IslandMesa"]
+position = Vector3(0.0, 78.0, 0.0)
+size = Vector3(130.0, 10.0, 130.0)
+material_override = SubResource("Mat_mesa")
+
+; Island Grove — forested rounded island
+
+[node name="IslandGrove" type="Node3D" parent="World"]
+position = Vector3(210.0, 0.0, -320.0)
+
+[node name="GroveBase" type="CSGCylinder3D" parent="World/IslandGrove"]
+position = Vector3(0.0, 30.0, 0.0)
+radius = 80.0
+height = 65.0
+material_override = SubResource("Mat_grove")
+
+[node name="GroveTree1" type="CSGCylinder3D" parent="World/IslandGrove"]
+position = Vector3(20.0, 82.0, 10.0)
+radius = 12.0
+height = 30.0
+material_override = SubResource("Mat_grove_trees")
+
+[node name="GroveTree2" type="CSGCylinder3D" parent="World/IslandGrove"]
+position = Vector3(-25.0, 78.0, 22.0)
+radius = 14.0
+height = 26.0
+material_override = SubResource("Mat_grove_trees")
+
+[node name="GroveTree3" type="CSGCylinder3D" parent="World/IslandGrove"]
+position = Vector3(12.0, 80.0, -28.0)
+radius = 11.0
+height = 28.0
+material_override = SubResource("Mat_grove_trees")
+
+; ── Characters ────────────────────────────────────────────────────────────────
+
+[node name="Characters" type="Node3D" parent="."]
+
+[node name="Marina" parent="Characters" instance=ExtResource("5_char")]
+position = Vector3(28.0, 140.0, 38.0)
+character_name = "Marina"
+flavor_text = "The lighthouse keeper. She always has a package to send."
+island_name = "Aerie"
+
+[node name="Bea" parent="Characters" instance=ExtResource("5_char")]
+position = Vector3(-38.0, 138.0, -28.0)
+character_name = "Bea"
+flavor_text = "Marina's apprentice. Fast with a rope, slow with words."
+island_name = "Aerie"
+
+[node name="Finn" parent="Characters" instance=ExtResource("5_char")]
+position = Vector3(352.0, 62.0, 258.0)
+character_name = "Finn"
+flavor_text = "A fisherman with ink-stained hands and a kind smile."
+island_name = "Cove"
+
+[node name="Yuki" parent="Characters" instance=ExtResource("5_char")]
+position = Vector3(-258.0, 84.0, 398.0)
+character_name = "Yuki"
+flavor_text = "Studies wind patterns from her observatory."
+island_name = "Mesa"
+
+[node name="Otto" parent="Characters" instance=ExtResource("5_char")]
+position = Vector3(222.0, 68.0, -298.0)
+character_name = "Otto"
+flavor_text = "The orchard keeper. His jams are famous."
+island_name = "Grove"
+
+; ── Plane ─────────────────────────────────────────────────────────────────────
+
+[node name="Plane" parent="." instance=ExtResource("4_plane")]
+unique_name_in_owner = true
+position = Vector3(0.0, 158.0, -15.0)
+
+; ── Camera ────────────────────────────────────────────────────────────────────
+
+[node name="CameraRig" type="Camera3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_cam")
+position = Vector3(0.0, 163.0, 1.0)
+
+; ── Delivery system ───────────────────────────────────────────────────────────
+
+[node name="DeliveryManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_dm")
+
+; ── UI overlay ────────────────────────────────────────────────────────────────
+
+[node name="HUD" parent="." instance=ExtResource("6_hud")]
+unique_name_in_owner = true
+
+[node name="DeliveryUI" parent="." instance=ExtResource("7_dui")]
+unique_name_in_owner = true
+
+[node name="CompletionUI" parent="." instance=ExtResource("8_cui")]
+unique_name_in_owner = true
