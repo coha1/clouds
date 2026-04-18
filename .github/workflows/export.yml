@@ -1,0 +1,44 @@
+name: Export & Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Install Godot 4.6
+        run: |
+          wget -q https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_linux.x86_64.zip
+          unzip -q Godot_v4.6-stable_linux.x86_64.zip
+          mv Godot_v4.6-stable_linux.x86_64 /usr/local/bin/godot
+          chmod +x /usr/local/bin/godot
+
+      - name: Install Web export templates
+        run: |
+          wget -q https://github.com/godotengine/godot/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/4.6.stable
+          unzip -q Godot_v4.6-stable_export_templates.tpz -d /tmp/templates
+          mv /tmp/templates/templates/* ~/.local/share/godot/export_templates/4.6.stable/
+
+      - name: Export Web
+        run: |
+          mkdir -p exports/web
+          godot --headless --export-release "Web" exports/web/index.html
+
+      - name: Deploy to itch.io
+        run: |
+          curl -L -o butler.zip https://github.com/itchio/butler/releases/latest/download/butler-linux-amd64.zip
+          unzip -q butler.zip
+          chmod +x linux-amd64/butler
+          ./linux-amd64/butler push exports/web ${{ secrets.ITCH_USERNAME }}/${{ secrets.ITCH_GAME_ID }}:web
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}

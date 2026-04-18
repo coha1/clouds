@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "mcp__83bfa614-a48d-487a-a84b-5ea276b68431__notion-fetch",
+      "mcp__Claude_in_Chrome__tabs_context_mcp"
+    ]
+  }
+}
