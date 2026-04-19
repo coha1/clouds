@@ -1,2 +1,3 @@
 res://scenes/plane2/plane2.gd
 res://scenes/plane2/Plane2.tscn
+res://scenes/ui/hud.gd

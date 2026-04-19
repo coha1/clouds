@@ -25,6 +25,12 @@ text = "ALT  -- m"
 theme_override_colors/font_color = Color(1, 1, 1, 0.9)
 theme_override_font_sizes/font_size = 18
 
+[node name="ThrottleLabel" type="Label" parent="FlightInfo"]
+unique_name_in_owner = true
+text = "THR  --%"
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_font_sizes/font_size = 18
+
 ; Stall warning — screen-center, hidden until stall
 [node name="StallLabel" type="Label" parent="."]
 unique_name_in_owner = true

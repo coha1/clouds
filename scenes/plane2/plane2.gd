@@ -7,7 +7,9 @@ extends RigidBody3D
 @export var speed: float = 20.0
 @export var speed_min: float = 5.0
 @export var speed_max: float = 50.0
-## How fast speed changes when throttle is held
+## How fast throttle_pct moves when the input is held (full range in ~4 s at 0.25)
+@export var throttle_rate: float = 0.25
+## How fast actual speed chases the throttle target
 @export var throttle_speed: float = 8.0
 
 # Controls --------------------------------------------------------------------
@@ -58,6 +60,10 @@ extends RigidBody3D
 ## Actual travel direction — normalised. Banking gradually curves this sideways.
 var _direction := Vector3.FORWARD
 
+## 0.0 – 1.0 engine power setting, adjusted by the player and read by the HUD.
+## Actual speed chases the target set by this value; energy/stall push it around.
+var throttle_pct: float = 0.4
+
 ## Angular velocities — lerped toward target rates for inertia feel.
 var _av_roll:  float = 0.0
 var _av_pitch: float = 0.0
@@ -75,8 +81,10 @@ func _physics_process(delta: float) -> void:
 	var yaw_input:   float = Input.get_axis("yaw_left",      "yaw_right")
 	var throttle:    float = Input.get_axis("throttle_down", "throttle_up")
 
-	# Throttle — hold trigger to change speed
-	speed = clampf(speed + throttle * throttle_speed * delta, speed_min, speed_max)
+	# Throttle — hold input moves the engine power setting; speed chases it
+	throttle_pct = clampf(throttle_pct + throttle * throttle_rate * delta, 0.0, 1.0)
+	var throttle_target := lerpf(speed_min, speed_max, throttle_pct)
+	speed = move_toward(speed, throttle_target, throttle_speed * delta)
 
 	# --- Asymmetric pitch rate ------------------------------------------------
 	# Pulling up (pitch_input > 0) is more powerful than pushing down.

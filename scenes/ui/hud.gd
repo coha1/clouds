@@ -1,11 +1,12 @@
-## Minimal flight HUD. Shows speed and altitude.
+## Minimal flight HUD. Shows speed, altitude, and throttle.
 ## Finds the plane via the "player_plane" group — works with any Node3D subclass.
 extends CanvasLayer
 
 
-@onready var speed_label: Label = %SpeedLabel
-@onready var alt_label: Label = %AltLabel
-@onready var stall_label: Label = %StallLabel
+@onready var speed_label:    Label = %SpeedLabel
+@onready var alt_label:      Label = %AltLabel
+@onready var throttle_label: Label = %ThrottleLabel
+@onready var stall_label:    Label = %StallLabel
 
 
 var _plane: Node3D
@@ -30,5 +31,7 @@ func _process(_delta: float) -> void:
 		spd = _plane.speed
 	elif _plane.get("current_speed") != null:
 		spd = _plane.current_speed
-	speed_label.text = "SPD  %d m/s" % roundi(spd)
-	alt_label.text   = "ALT  %d m"   % roundi(_plane.global_position.y)
+	speed_label.text    = "SPD  %d m/s" % roundi(spd)
+	alt_label.text      = "ALT  %d m"   % roundi(_plane.global_position.y)
+	var thr: float = _plane.get("throttle_pct") if _plane.get("throttle_pct") != null else 0.0
+	throttle_label.text = "THR  %d%%" % roundi(thr * 100.0)
