@@ -1,8 +1,9 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1776548526
+::res://::1776556721
 export_presets.cfg::TextFile::-1::1776548526::0::1::::<><><>0<>0<><>::
+::res://deleteme/::1776548725
 ::res://exports/::1776548523
-::res://exports/web/::1776548526
+::res://exports/web/::1776548718
 index.apple-touch-icon.png::CompressedTexture2D::7598912062515652272::1776548526::1776548718::1::::<><><>0<>0<>257d2b0a30e875adac37c3c36dd650d2<>res://.godot/imported/index.apple-touch-icon.png-bec44240503e0edb75d852ab0cc26d58.ctex::
 index.icon.png::CompressedTexture2D::3450953050383909520::1776548526::1776548718::1::::<><><>0<>0<>d507bad4a59d0a11742cd6fe35cfd4b3<>res://.godot/imported/index.icon.png-8466b9836b3b13bcc45e53125321ef39.ctex::
 index.png::CompressedTexture2D::2586259559004274524::1776548526::1776548718::1::::<><><>0<>0<>ae7d280df5eea80bf07d97772bb8d5cf<>res://.godot/imported/index.png-d03311572afeb237347e3aea48014cb0.ctex::
@@ -13,9 +14,9 @@ plane_camera.gd::GDScript::8369660650200371318::1776501376::0::1::::PlaneCamera<
 ::res://scenes/plane/::1776478424
 plane.tscn::PackedScene::-1::1776296950::0::1::::<><><>0<>0<><>::res://scenes/plane/plane_flight.gd
 plane_flight.gd::GDScript::3922096098526180158::1776478424::0::1::::PlaneFlight<>CharacterBody3D<><>0<>0<><>::
-::res://scenes/plane2/::1776548388
+::res://scenes/plane2/::1776556692
 plane2.gd::GDScript::6643836500766272770::1776501343::0::1::::<>RigidBody3D<><>0<>0<><>::
-Plane2.tscn::PackedScene::2751609133037323245::1776548388::0::1::::<><><>0<>0<><>::uid://c1wlatcfp0n8u::::res://scenes/plane2/plane2.gd
+Plane2.tscn::PackedScene::2751609133037323245::1776556692::0::1::::<><><>0<>0<><>::uid://c1wlatcfp0n8u::::res://scenes/plane2/plane2.gd
 plane2_backup.gd::GDScript::4351892379487790550::1776501329::0::1::::<>RigidBody3D<><>0<>0<><>::
 ::res://scenes/ui/::1776498754
 hud.gd::GDScript::694782304108275876::1776498754::0::1::::<>CanvasLayer<><>0<>0<><>::
