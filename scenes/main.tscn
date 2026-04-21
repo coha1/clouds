@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bfg5uocmfe5hx" path="res://scenes/plane2/Plane2.tscn" id="2_jyhfs"]
 [ext_resource type="Script" uid="uid://drilc83eugn0a" path="res://scenes/Camera/plane_camera.gd" id="3_cam"]
 [ext_resource type="Script" uid="uid://b7a0hn66j5jl5" path="res://scenes/World/island_terrain.gd" id="4_terrain"]
+[ext_resource type="PackedScene" path="res://scenes/ui/touch_controls.tscn" id="5_touch"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
 sky_top_color = Color(0.16, 0.42, 0.8, 1)
@@ -385,3 +386,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 255.4379)
 script = ExtResource("3_cam")
 
 [node name="HUD" parent="." unique_id=2139853589 instance=ExtResource("2_hud")]
+
+[node name="TouchControls" parent="." instance=ExtResource("5_touch")]

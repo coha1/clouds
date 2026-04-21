@@ -1,0 +1,310 @@
+[gd_scene format=3 uid="uid://touch_controls"]
+
+[ext_resource type="Script" path="res://scenes/ui/touch_controls.gd" id="0_ctrl"]
+[ext_resource type="Script" path="res://scenes/ui/touch_joystick.gd" id="1_joystick"]
+[ext_resource type="Script" path="res://scenes/ui/touch_button.gd" id="2_button"]
+
+; ── Joystick base ring ────────────────────────────────────────────────────────
+[sub_resource type="StyleBoxFlat" id="Style_base"]
+bg_color = Color(0.15, 0.35, 0.65, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.85, 1.0, 1.0)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+
+; ── Joystick knob ─────────────────────────────────────────────────────────────
+[sub_resource type="StyleBoxFlat" id="Style_knob"]
+bg_color = Color(0.78, 0.92, 1.0, 1.0)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+; ── Throttle button ───────────────────────────────────────────────────────────
+[sub_resource type="StyleBoxFlat" id="Style_btn"]
+bg_color = Color(0.15, 0.35, 0.65, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.85, 1.0, 1.0)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+; ── Toggle button: ON state (controls visible) ────────────────────────────────
+[sub_resource type="StyleBoxFlat" id="Style_tog_on"]
+bg_color = Color(0.2, 0.45, 0.78, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.85, 1.0, 1.0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+; ── Toggle button: OFF state (controls hidden) ────────────────────────────────
+[sub_resource type="StyleBoxFlat" id="Style_tog_off"]
+bg_color = Color(0.06, 0.12, 0.22, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.55, 0.75, 1.0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+; =============================================================================
+
+[node name="TouchControls" type="CanvasLayer"]
+layer = 10
+script = ExtResource("0_ctrl")
+
+; Full-screen pass-through root.
+[node name="Root" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+; ── Toggle button (always visible, sits above the dimmed controls) ─────────────
+; Anchored top-right: 88 × 40 px, 12 px inset from each edge.
+; Separate from the Controls node so toggling controls doesn't hide this.
+[node name="ToggleBtn" type="Button" parent="Root"]
+unique_name_in_owner = true
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -100.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = 52.0
+modulate = Color(1, 1, 1, 0.72)
+toggle_mode = true
+text = "TOUCH"
+theme_override_styles/normal  = SubResource("Style_tog_off")
+theme_override_styles/pressed = SubResource("Style_tog_on")
+theme_override_styles/hover   = SubResource("Style_tog_off")
+theme_override_styles/hover_pressed = SubResource("Style_tog_on")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color         = Color(0.65, 0.85, 1.0, 1.0)
+theme_override_colors/font_pressed_color = Color(0.9, 0.97, 1.0, 1.0)
+
+; ── Controls group — hidden/shown as one unit by the toggle ───────────────────
+[node name="Controls" type="Control" parent="Root"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+modulate = Color(1, 1, 1, 0.42)
+
+; ── Left joystick — pitch (Y) and roll (X) ────────────────────────────────────
+[node name="LeftJoystick" type="Control" parent="Root/Controls"]
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -240.0
+offset_right = 240.0
+offset_bottom = -20.0
+mouse_filter = 2
+script = ExtResource("1_joystick")
+action_negative_x = "roll_left"
+action_positive_x = "roll_right"
+action_negative_y = "pitch_forward"
+action_positive_y = "pitch_back"
+
+[node name="Base" type="Panel" parent="Root/Controls/LeftJoystick"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = 80.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_base")
+
+[node name="Knob" type="Panel" parent="Root/Controls/LeftJoystick"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_knob")
+
+; ── Right joystick — camera look ──────────────────────────────────────────────
+[node name="RightJoystick" type="Control" parent="Root/Controls"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -240.0
+offset_right = -20.0
+offset_bottom = -20.0
+mouse_filter = 2
+script = ExtResource("1_joystick")
+action_negative_x = "camera_look_left"
+action_positive_x = "camera_look_right"
+action_negative_y = "camera_look_up"
+action_positive_y = "camera_look_down"
+
+[node name="Base" type="Panel" parent="Root/Controls/RightJoystick"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = 80.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_base")
+
+[node name="Knob" type="Panel" parent="Root/Controls/RightJoystick"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_knob")
+
+; ── Throttle buttons — bottom-centre, 100 × 100 each, 20 px gap ───────────────
+[node name="ThrottleDown" type="Control" parent="Root/Controls"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -120.0
+offset_right = -20.0
+offset_bottom = -20.0
+mouse_filter = 2
+script = ExtResource("2_button")
+action = "throttle_down"
+
+[node name="Bg" type="Panel" parent="Root/Controls/ThrottleDown"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_btn")
+
+[node name="Label" type="Label" parent="Root/Controls/ThrottleDown"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+text = "−"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.78, 0.92, 1.0, 1.0)
+
+[node name="ThrottleUp" type="Control" parent="Root/Controls"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -120.0
+offset_right = 120.0
+offset_bottom = -20.0
+mouse_filter = 2
+script = ExtResource("2_button")
+action = "throttle_up"
+
+[node name="Bg" type="Panel" parent="Root/Controls/ThrottleUp"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_btn")
+
+[node name="Label" type="Label" parent="Root/Controls/ThrottleUp"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.78, 0.92, 1.0, 1.0)
+
+; ── Yaw buttons — flank the throttle pair, vertically centred with them ────────
+; 80 × 80 px, 10 px gap from the adjacent throttle button.
+[node name="YawLeft" type="Control" parent="Root/Controls"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -110.0
+offset_right = -130.0
+offset_bottom = -30.0
+mouse_filter = 2
+script = ExtResource("2_button")
+action = "yaw_left"
+
+[node name="Bg" type="Panel" parent="Root/Controls/YawLeft"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_btn")
+
+[node name="Label" type="Label" parent="Root/Controls/YawLeft"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+text = "◄"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.78, 0.92, 1.0, 1.0)
+
+[node name="YawRight" type="Control" parent="Root/Controls"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 130.0
+offset_top = -110.0
+offset_right = 210.0
+offset_bottom = -30.0
+mouse_filter = 2
+script = ExtResource("2_button")
+action = "yaw_right"
+
+[node name="Bg" type="Panel" parent="Root/Controls/YawRight"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_btn")
+
+[node name="Label" type="Label" parent="Root/Controls/YawRight"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+text = "►"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.78, 0.92, 1.0, 1.0)
