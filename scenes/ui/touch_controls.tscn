@@ -249,6 +249,40 @@ vertical_alignment = 1
 theme_override_font_sizes/font_size = 40
 theme_override_colors/font_color = Color(0.78, 0.92, 1.0, 1.0)
 
+; ── Interact button — centre-bottom, hidden until near a landing zone ─────────
+; Wider than the throttle buttons; sits above the bottom row.
+; Added to "touch_interact_btn" group by touch_controls.gd at runtime.
+[node name="InteractBtn" type="Control" parent="Root/Controls"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -205.0
+offset_right = 100.0
+offset_bottom = -135.0
+mouse_filter = 2
+visible = false
+script = ExtResource("2_button")
+action = "interact"
+
+[node name="Bg" type="Panel" parent="Root/Controls/InteractBtn"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_btn")
+
+[node name="Label" type="Label" parent="Root/Controls/InteractBtn"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+text = "LAND"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.4, 1.0, 0.55, 1.0)
+
 ; ── Yaw buttons — flank the throttle pair, vertically centred with them ────────
 ; 80 × 80 px, 10 px gap from the adjacent throttle button.
 [node name="YawLeft" type="Control" parent="Root/Controls"]

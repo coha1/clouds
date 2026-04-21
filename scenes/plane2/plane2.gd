@@ -57,6 +57,14 @@ extends RigidBody3D
 @export var stall_assist_rate: float = 2.0
 
 
+## When true the landing zone drives the plane; all player input is suppressed.
+## Setting it also freezes/unfreezes the RigidBody so transforms can be set directly.
+var autopilot: bool = false:
+	set(v):
+		autopilot = v
+		freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+		freeze = v
+
 ## Actual travel direction — normalised. Banking gradually curves this sideways.
 var _direction := Vector3.FORWARD
 
@@ -76,6 +84,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if autopilot:
+		return
+
 	var roll_input:  float = Input.get_axis("roll_left",     "roll_right")
 	var pitch_input: float = Input.get_axis("pitch_forward", "pitch_back")
 	var yaw_input:   float = Input.get_axis("yaw_left",      "yaw_right")

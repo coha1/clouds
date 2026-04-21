@@ -14,6 +14,7 @@ var _plane: Node3D
 
 func _ready() -> void:
 	stall_label.visible = false
+	%LandPrompt.add_to_group("land_prompt_label")
 	await get_tree().process_frame
 	var planes := get_tree().get_nodes_in_group("player_plane")
 	if planes.is_empty():

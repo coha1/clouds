@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://landing_zone"]
+
+[ext_resource type="Script" path="res://scenes/landing_zone/landing_zone.gd" id="1_lz"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_trigger"]
+radius = 60.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_runway"]
+size = Vector3(8.0, 0.05, 30.0)
+
+[sub_resource type="StandardMaterial3D" id="Mat_runway"]
+albedo_color = Color(0.85, 0.82, 0.6, 1.0)
+
+; =============================================================================
+
+[node name="LandingZone" type="Node3D"]
+script = ExtResource("1_lz")
+
+; ── Trigger — detects the plane when it flies within 60 m ────────────────────
+[node name="TriggerArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerArea"]
+shape = SubResource("SphereShape3D_trigger")
+
+; ── Approach marker ───────────────────────────────────────────────────────────
+; Default: 60 m forward (+Z), 20 m up. Move in the editor to suit the terrain.
+[node name="ApproachPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 60)
+
+; ── Landing marker ────────────────────────────────────────────────────────────
+; Slightly above ground so the plane doesn't clip. Move to the exact touchdown spot.
+[node name="LandingPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+; ── Visual runway strip ───────────────────────────────────────────────────────
+; A flat sandy-coloured box centred on the landing zone origin.
+; Stretch/reposition in the editor as needed.
+[node name="Runway" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("BoxMesh_runway")
+surface_material_override/0 = SubResource("Mat_runway")

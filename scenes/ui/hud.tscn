@@ -31,6 +31,24 @@ text = "THR  --%"
 theme_override_colors/font_color = Color(1, 1, 1, 0.9)
 theme_override_font_sizes/font_size = 18
 
+; Land / take-off prompt — bottom-centre, shown by landing_zone.gd via group
+[node name="LandPrompt" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -160.0
+offset_right = 160.0
+offset_bottom = -120.0
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.4, 1.0, 0.55, 1.0)
+theme_override_font_sizes/font_size = 22
+visible = false
+
 ; Stall warning — screen-center, hidden until stall
 [node name="StallLabel" type="Label" parent="."]
 unique_name_in_owner = true
