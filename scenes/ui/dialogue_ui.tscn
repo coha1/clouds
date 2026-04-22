@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://dialogue_ui"]
+
+[ext_resource type="Script" path="res://scenes/ui/dialogue_ui.gd" id="1_du"]
+
+[sub_resource type="StyleBoxFlat" id="Style_panel"]
+bg_color = Color(0.04, 0.07, 0.13, 0.95)
+border_width_left = 0
+border_width_top = 2
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color(0.3, 0.52, 0.82, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="Style_btn"]
+bg_color = Color(0.15, 0.35, 0.65, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.78, 1.0, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Style_btn_hover"]
+bg_color = Color(0.22, 0.48, 0.82, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 0.9, 1.0, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+; =============================================================================
+
+[node name="DialogueUI" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_du")
+
+; Full-width panel pinned to the bottom of the screen.
+[node name="Panel" type="PanelContainer" parent="."]
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -190.0
+theme_override_styles/panel = SubResource("Style_panel")
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="HBoxContainer" parent="Panel/Margin"]
+theme_override_constants/separation = 20
+
+[node name="TextColumn" type="VBoxContainer" parent="Panel/Margin/Layout"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="SpeakerLabel" type="Label" parent="Panel/Margin/Layout/TextColumn"]
+unique_name_in_owner = true
+text = "SPEAKER"
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.55, 0.82, 1.0, 1.0)
+
+[node name="BodyLabel" type="Label" parent="Panel/Margin/Layout/TextColumn"]
+unique_name_in_owner = true
+text = "..."
+autowrap_mode = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 19
+theme_override_colors/font_color = Color(0.92, 0.95, 1.0, 1.0)
+
+[node name="ContinueButton" type="Button" parent="Panel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 50)
+size_flags_vertical = 4
+text = "CONTINUE  ▶"
+theme_override_styles/normal = SubResource("Style_btn")
+theme_override_styles/hover = SubResource("Style_btn_hover")
+theme_override_styles/pressed = SubResource("Style_btn")
+theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(0.9, 0.97, 1.0, 1.0)

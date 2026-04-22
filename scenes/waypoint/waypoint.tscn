@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://waypoint"]
+
+[ext_resource type="Script" path="res://scenes/waypoint/waypoint.gd" id="1_wp"]
+
+; ── Beacon pillar — tall thin cylinder, emissive orange ───────────────────────
+[sub_resource type="CylinderMesh" id="CylMesh_pillar"]
+top_radius = 0.18
+bottom_radius = 0.18
+height = 22.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_beacon"]
+transparency = 0
+albedo_color = Color(1.0, 0.65, 0.1, 1.0)
+emission_enabled = true
+emission = Color(1.0, 0.6, 0.05, 1.0)
+emission_energy_multiplier = 3.5
+
+; ── Cap ring — flat disc at top ───────────────────────────────────────────────
+[sub_resource type="CylinderMesh" id="CylMesh_cap"]
+top_radius = 1.4
+bottom_radius = 1.4
+height = 0.35
+
+; =============================================================================
+
+[node name="Waypoint" type="Node3D"]
+script = ExtResource("1_wp")
+
+; Pillar centred at (0,11,0) so its base sits at ground level.
+[node name="Pillar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
+mesh = SubResource("CylMesh_pillar")
+surface_material_override/0 = SubResource("Mat_beacon")
+
+; Cap disc at the top of the pillar.
+[node name="Cap" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.2, 0)
+mesh = SubResource("CylMesh_cap")
+surface_material_override/0 = SubResource("Mat_beacon")
+
+; Warm point light at the top so the beacon glows on nearby terrain.
+[node name="Light" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22, 0)
+light_color = Color(1.0, 0.7, 0.2, 1.0)
+light_energy = 4.0
+omni_range = 30.0
+
+; Billboard label — always faces the camera; visible from far away.
+[node name="BeaconLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27, 0)
+billboard = 1
+double_sided = true
+text = "DESTINATION"
+font_size = 38
+modulate = Color(1.0, 0.88, 0.4, 1.0)
+outline_size = 6
+outline_modulate = Color(0.1, 0.06, 0.0, 1.0)

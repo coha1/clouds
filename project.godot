@@ -18,6 +18,10 @@ config/name="Clouds"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[autoload]
+
+QuestManager="*res://autoloads/quest_manager.gd"
+
 [display]
 
 window/size/viewport_width=1280

@@ -32,7 +32,7 @@ func _ready() -> void:
 	target = planes[0]
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not target:
 		return
 	_update_look(delta)
